@@ -1,9 +1,17 @@
-interface Comparable<T> {
+export interface Comparable<T> {
   compareTo(that: T): number
 }
 
-export class MinHeap<T extends number | string | Comparable<T>> {
+type CompareFunc<T> = (a: T, b: T) => boolean
+
+export class PriorityQueue<T extends number | string | Comparable<T>> {
   private data: T[] = [-1 as any]
+
+  constructor(compareFunc?: CompareFunc<T>) {
+    if (compareFunc) {
+      this.less = compareFunc
+    }
+  }
 
   size() {
     return this.data.length - 1
@@ -11,6 +19,12 @@ export class MinHeap<T extends number | string | Comparable<T>> {
 
   isEmpty() {
     return this.size() === 0
+  }
+
+  top(): T | null {
+    if (this.isEmpty()) return null
+
+    return this.data[1]
   }
 
   push(value: T): void {
@@ -68,5 +82,10 @@ export class MinHeap<T extends number | string | Comparable<T>> {
       } else break
     }
   }
-}
 
+  *[Symbol.iterator]() {
+    for (let i = 1; i < this.data.length; ++i) {
+      yield this.data[i]
+    }
+  }
+}
