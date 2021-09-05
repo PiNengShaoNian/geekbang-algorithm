@@ -26,9 +26,11 @@ export const contains = (s: string, t: string) => {
   }
 
   /**
-   * 1331
-   * l = 1, r = 3
-   * 133 = 1331 - 1 * (10 ^ (3 - 1 + 1))
+   * fooba
+   * fo000
+   *   
+   * 
+   * Hash(s[l...r]) = (H(r + 1) - H(l) * b ^ r - l + 1) mod p
    * @param l 
    * @param r 
    * @returns 
