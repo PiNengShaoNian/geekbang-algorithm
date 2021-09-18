@@ -44,7 +44,7 @@ export function countRangeSum(
 
   presum[0] = 0
   for (let i = 1; i <= nums.length; ++i) {
-    presum[i] = presum[i - 1] + nums[i]
+    presum[i] = presum[i - 1] + nums[i - 1]
   }
 
   const allNumbers = new Set<number>()
