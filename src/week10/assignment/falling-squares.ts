@@ -1,4 +1,4 @@
-export class SegmentTreeNode {
+class SegmentTreeNode {
   mark: null | number = null
 
   constructor(public l: number, public r: number, public val: number) {}
@@ -31,11 +31,11 @@ class SegmentTree {
   private spread(curr: number) {
     if (this.tree[curr].mark !== null) {
       const mark = this.tree[curr].mark!
-      this.tree[curr * 2].val += mark
-      this.tree[curr * 2].mark! += mark
+      this.tree[curr * 2].val = mark
+      this.tree[curr * 2].mark = mark
 
-      this.tree[curr * 2 + 1].val += mark
-      this.tree[curr * 2 + 1].mark! += mark
+      this.tree[curr * 2 + 1].val = mark
+      this.tree[curr * 2 + 1].mark = mark
 
       this.tree[curr].mark = null
     }
@@ -48,8 +48,8 @@ class SegmentTree {
     val: number
   ) {
     if (l <= this.tree[curr].l && r >= this.tree[curr].r) {
-      this.tree[curr].val += val
-      this.tree[curr].mark! += val
+      this.tree[curr].val = val
+      this.tree[curr].mark = val
       return
     }
 
@@ -95,6 +95,7 @@ class SegmentTree {
       ans = Math.max(this.queryRecursively(curr * 2 + 1, l, r), ans)
     }
 
+    // this.tree[curr].val = Math.max(this.tree[curr * 2].val, this.tree[curr * 2 + 1].val)
     return ans
   }
 }
@@ -104,7 +105,7 @@ export function fallingSquares(positions: number[][]): number[] {
 
   for (const position of positions) {
     allNumbers.add(position[0])
-    allNumbers.add(position[0] + position[1])
+    allNumbers.add(position[0] + position[1] - 1)
   }
 
   const values = new Map<number, number>()
@@ -117,15 +118,14 @@ export function fallingSquares(positions: number[][]): number[] {
 
   const tree = new SegmentTree(idx)
 
-  console.log(values)
-
   const ans: number[] = []
+  let best = 0
   for (const position of positions) {
     const left = values.get(position[0])!
-    const right = values.get(position[0] + position[1])!
-
-    tree.updateRange(left, right, position[1])
-    ans.push(tree.query(0, idx - 1))
+    const right = values.get(position[0] + position[1] - 1)!
+    const height = tree.query(left, right) + position[1]
+    tree.updateRange(left, right, height)
+    ans.push((best = Math.max(height, best)))
   }
 
   return ans
