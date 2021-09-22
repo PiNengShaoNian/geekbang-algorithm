@@ -1,4 +1,4 @@
-function decodeString(s: string): string {
+export function decodeString(s: string): string {
   let index = 0
   const n = s.length
 
@@ -15,7 +15,11 @@ function decodeString(s: string): string {
   const readStr = (): string => {
     let ans = ''
 
-    while (index < n && (s[index] < '0' || s[index] > '9')) {
+    while (
+      index < n &&
+      (s[index] < '0' ||
+        (s[index] > '9' && s[index] !== '[' && s[index] !== ']'))
+    ) {
       ans += s[index]
       ++index
     }
@@ -39,6 +43,8 @@ function decodeString(s: string): string {
         str = readStr()
       }
       ans += str.repeat(num)
+
+      if (s[index] === ']') return ans
     }
 
     return ans
