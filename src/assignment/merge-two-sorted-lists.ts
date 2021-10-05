@@ -10,8 +10,8 @@ export function mergeTwoLists(
   for (; l1 || l2; ) {
     if (!l1 || (l2 && l2.val < l1.val)) {
       cur.next = l2
-      cur = l2
-      l2 = l2.next
+      cur = l2!
+      l2 = l2!.next
 
       if (!l1) break
     } else {
