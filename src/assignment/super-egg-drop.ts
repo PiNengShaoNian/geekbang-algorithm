@@ -25,8 +25,6 @@ export function superEggDrop(k: number, n: number): number {
     return (memo[K][N] = res)
   }
 
-  console.log(memo)
-
   return Impl(k, n)
 }
 
